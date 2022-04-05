@@ -23,17 +23,23 @@ export class UserService {
 
   }
 
-  login$(userData: {email: string, password: string}): Observable<IUser> {
+  login$(userData: { email: string, password: string }): Observable<IUser> {
     return this.httpClient
-    .post<IUser>(`${environment.apiUrl}/login`, userData, { withCredentials: true, observe: 'response'})
-    .pipe(
-      tap(response => console.log(response)),
-      map(response => response.body),
-      tap(user => this.currentUser = user))
+      .post<IUser>(`${environment.apiUrl}/login`, userData, { withCredentials: true, observe: 'response' })
+      .pipe(
+        tap(response => console.log(response)),
+        map(response => response.body),
+        tap(user => this.currentUser = user))
+  }
+
+  getProfile$(): Observable<IUser> {
+    return this.httpClient.get<IUser>(`${environment.apiUrl}/users/profile`, { withCredentials: true }).pipe(
+      tap(user => this.currentUser = user)
+    )
   }
 
   logout(): void {
-  
+
   }
 
   register$(userData: CreateUserDto
